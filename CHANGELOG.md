@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.1] - 2026-04-09
+
+### Changed
+- Added Laravel 13 support (`^13.0`) to `illuminate/routing`, `illuminate/database`, and `laravel/framework` version constraints
+
 ## [1.0.0] - 2026-04-09
 
 ### Added
