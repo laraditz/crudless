@@ -1,14 +1,15 @@
 # Laravel Crudless
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/laraditz/crudless.svg?style=flat-square)](https://packagist.org/packages/laraditz/crudless)
+[![Total Downloads](https://img.shields.io/packagist/dt/laraditz/crudless.svg?style=flat-square)](https://packagist.org/packages/laraditz/crudless)
+[![License](https://img.shields.io/packagist/l/laraditz/crudless?style=flat-square)](./LICENSE.md)
 
 Minimal base API controller for Laravel. Full CRUD with a single property declaration - no boilerplate, no repetition.
 
 ## Requirements
 
 - PHP ^8.1
-- Laravel 10, 11, or 12
-- [`raditzfarhan/laravel-api-response`](https://github.com/raditzfarhan/laravel-api-response)
+- Laravel 10, 11, 12, or 13
 
 ## Installation
 
@@ -351,6 +352,19 @@ Internal helpers `authorizeAction()`, `resolveStoreData()`, `resolveUpdateData()
 
 ---
 
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information about recent changes.
+
+## Security
+
+If you discover any security vulnerabilities, please email [raditzfarhan@gmail.com](mailto:raditzfarhan@gmail.com) instead of using the issue tracker. All security vulnerabilities will be promptly addressed.
+
+## Credits
+
+- [Raditz Farhan](https://github.com/raditzfarhan) - Creator and maintainer
+- [All Contributors](../../contributors) - Thank you for your contributions!
+
 ## License
 
-MIT
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
