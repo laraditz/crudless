@@ -66,6 +66,14 @@ abstract class BaseApiController extends Controller
     protected int $maxPerPage = 100;
 
     /**
+     * Optional Filter class for index() query filtering via laraditz/model-filter.
+     * When set, the model must use the Filterable trait.
+     *
+     * @var string|null
+     */
+    protected ?string $filter = null;
+
+    /**
      * Form Request class for store().
      * When declared, takes priority over storeRules().
      *
@@ -90,7 +98,15 @@ abstract class BaseApiController extends Controller
      */
     protected function query(): Builder
     {
-        return $this->resolveModel()::query()->with($this->with);
+        $query = $this->resolveModel()::query()->with($this->with);
+
+        if ($this->filter) {
+            $query->filter(request()->all(), $this->filter);
+        } elseif (method_exists($this->resolveModel(), 'scopeFilter')) {
+            $query->filter(request()->all());
+        }
+
+        return $query;
     }
 
     /**
