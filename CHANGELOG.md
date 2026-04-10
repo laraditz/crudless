@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0] - 2026-04-10
+
+### Added
+- `$filter` — optional Filter class for `index()` query filtering via `laraditz/model-filter`
+- `query()` now automatically applies `->filter(request()->all())` when the model uses the `Filterable` trait, or `->filter(request()->all(), $filter)` when `$filter` is declared explicitly
+- Added `laraditz/model-filter` as a required dependency
+
 ## [1.0.1] - 2026-04-09
 
 ### Changed
