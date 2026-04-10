@@ -226,6 +226,55 @@ The base `query()` is simply `$this->resolveModel()::query()->with($this->with)`
 
 ---
 
+### Filtering
+
+Integrates with [`laraditz/model-filter`](https://github.com/laraditz/model-filter) to enable dynamic query filtering on `index()` via request parameters.
+
+**Step 1** — add the `Filterable` trait to your model and declare filterable fields:
+
+```php
+use Laraditz\ModelFilter\Filterable;
+
+class Post extends Model
+{
+    use Filterable;
+
+    protected array $filterable = ['title', 'status', 'author.name'];
+}
+```
+
+**Step 2** — filtering is applied automatically on `index()` with no extra configuration needed:
+
+```php
+class PostController extends BaseApiController
+{
+    protected string $model = Post::class;
+}
+```
+
+Clients can now filter via query parameters:
+
+```
+GET /posts?filters[status]=published
+GET /posts?filters[title]=Laravel
+```
+
+For custom filter logic, generate a filter class and point `$filter` to it:
+
+```bash
+php artisan make:filter PostFilter
+```
+
+```php
+class PostController extends BaseApiController
+{
+    protected string $model  = Post::class;
+    protected ?string $filter = PostFilter::class;
+}
+```
+
+---
+
 ### Lifecycle Hooks
 
 Override any hook to add behaviour without replacing the entire method.
@@ -306,6 +355,8 @@ class PostController extends BaseApiController
     protected ?string $storeRequest    = StorePostRequest::class;
     protected ?string $updateRequest   = UpdatePostRequest::class;
 
+    protected ?string $filter          = PostFilter::class;
+
     protected function query(): Builder
     {
         return $this->resolveModel()::query()
@@ -349,6 +400,13 @@ class OrderController extends BaseApiController
 ```
 
 Internal helpers `authorizeAction()`, `resolveStoreData()`, `resolveUpdateData()`, `resolveModel()`, and `transform()` are all `protected` and available in child classes.
+
+---
+
+## Dependencies
+
+- [`raditzfarhan/laravel-api-response`](https://github.com/raditzfarhan/laravel-api-response) — all responses are dispatched through its `response()->api()` macro
+- [`laraditz/model-filter`](https://github.com/laraditz/model-filter) — powers the `$filter` / `Filterable` integration for `index()` query filtering
 
 ---
 
