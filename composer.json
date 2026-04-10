@@ -22,7 +22,7 @@
     "illuminate/routing": "^10.0|^11.0|^12.0|^13.0",
     "illuminate/database": "^10.0|^11.0|^12.0|^13.0",
     "raditzfarhan/laravel-api-response": "^1.0",
-    "laraditz/model-filter": "^1.0"
+    "laraditz/model-filter": "^2.0"
   },
   "require-dev": {
     "laravel/framework": "^10.0|^11.0|^12.0|^13.0"

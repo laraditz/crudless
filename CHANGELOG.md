@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.1] - 2026-04-11
+
+### Changed
+- Bumped `laraditz/model-filter` requirement to `^2.0`
+
 ## [1.1.0] - 2026-04-10
 
 ### Added
