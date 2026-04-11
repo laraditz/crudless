@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0] - 2026-04-11
+
+### Added
+- `BaseAuthController` — register, login, logout via Laravel Sanctum with lifecycle hooks and validation extensibility
+- `$userModel` — configurable user model, defaults to `App\Models\User`
+- `$registerRequest` / `$loginRequest` — optional Form Request classes for auth validation
+- `registerRules()` / `loginRules()` — overridable inline validation rules
+- Lifecycle hooks: `beforeRegister`, `afterRegister`, `beforeLogin`, `afterLogin`, `beforeLogout`, `afterLogout`
+- `Crudless::authRoutes($prefix, $controller, $except)` — one-line route registration with configurable prefix, controller, and route exclusions
+- `CrudlessManager`, `CrudlessServiceProvider`, `Crudless` facade for service container integration
+- `laravel/sanctum`, `illuminate/auth`, `illuminate/hashing` as required dependencies
+
 ## [1.1.1] - 2026-04-11
 
 ### Changed
