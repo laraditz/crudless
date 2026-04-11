@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/laraditz/crudless.svg?style=flat-square)](https://packagist.org/packages/laraditz/crudless)
 [![License](https://img.shields.io/packagist/l/laraditz/crudless?style=flat-square)](./LICENSE.md)
 
-Minimal base API controller for Laravel. Full CRUD with a single property declaration - no boilerplate, no repetition.
+The fastest way to build a Laravel API. Get full CRUD, auth (register, login, logout), or both working in minutes - use only what you need, no boilerplate, no repetition.
 
 ## Requirements
 
@@ -17,9 +17,11 @@ Minimal base API controller for Laravel. Full CRUD with a single property declar
 composer require laraditz/crudless
 ```
 
-## Basic Usage
+## Quick Start
 
-Extend `BaseApiController`. If your controller follows the `{Model}Controller` naming convention, no configuration is needed:
+Use whichever pieces you need - CRUD, auth, or both.
+
+**1. CRUD - extend `BaseApiController`:**
 
 ```php
 use Laraditz\Crudless\BaseApiController;
@@ -27,21 +29,33 @@ use Laraditz\Crudless\BaseApiController;
 class UserController extends BaseApiController {}
 ```
 
-Register routes:
-
 ```php
 Route::apiResource('users', UserController::class);
 ```
 
-That is all. `index`, `show`, `store`, `update`, `destroy` are fully operational.
+`index`, `show`, `store`, `update`, `destroy` are live. The model is resolved automatically from the controller name (`UserController` → `App\Models\User`).
 
-`UserController` automatically resolves to `App\Models\User` (falling back to `App\User`). Set `$model` explicitly if your model lives elsewhere.
+**2. Auth - register routes in `routes/api.php`:**
+
+```php
+use Laraditz\Crudless\Facades\Crudless;
+
+Crudless::authRoutes();
+```
+
+That's it. You now have:
+
+| Method | URI              | Description       |
+| ------ | ---------------- | ----------------- |
+| `POST` | `/auth/register` | Create account    |
+| `POST` | `/auth/login`    | Get Sanctum token |
+| `POST` | `/auth/logout`   | Revoke token      |
 
 ---
 
 ## Configuration Reference
 
-Every property is optional. Declare only what the resource needs.
+Both `BaseApiController` and `BaseAuthController` are optional - use only what you need. Every property on each is optional too.
 
 ### Model
 
@@ -405,9 +419,9 @@ Internal helpers `authorizeAction()`, `resolveStoreData()`, `resolveUpdateData()
 
 ### Auth
 
-`BaseAuthController` provides register, login, and logout out of the box via Laravel Sanctum.
+`BaseAuthController` provides register, login, and logout via Laravel Sanctum. Skip this entirely if you have your own auth solution.
 
-**Step 1** — ensure `HasApiTokens` is on your User model:
+**Step 1** - ensure `HasApiTokens` is on your User model:
 
 ```php
 use Laravel\Sanctum\HasApiTokens;
@@ -418,7 +432,7 @@ class User extends Authenticatable
 }
 ```
 
-**Step 2** — register routes in `routes/api.php`:
+**Step 2** - register routes in `routes/api.php`:
 
 ```php
 use Laraditz\Crudless\Facades\Crudless;
@@ -428,11 +442,11 @@ Crudless::authRoutes();
 
 This registers:
 
-| Method   | URI              | Auth         |
-| -------- | ---------------- | ------------ |
-| `POST`   | `/auth/register` | No           |
-| `POST`   | `/auth/login`    | No           |
-| `DELETE` | `/auth/logout`   | Bearer token |
+| Method | URI              | Auth         |
+| ------ | ---------------- | ------------ |
+| `POST` | `/auth/register` | No           |
+| `POST` | `/auth/login`    | No           |
+| `POST` | `/auth/logout`   | Bearer token |
 
 **Custom prefix or controller:**
 
@@ -491,7 +505,7 @@ class AdminAuthController extends BaseAuthController
 | `beforeRegister` | `(array $data): void`                 | after validation, before creation                      |
 | `afterRegister`  | `(mixed $user): mixed`                | after creation, before response                        |
 | `beforeLogin`    | `(array $data): void`                 | after validation, before credential check              |
-| `afterLogin`     | `(mixed $user, string $token): mixed` | after token issued — return value is the response body |
+| `afterLogin`     | `(mixed $user, string $token): mixed` | after token issued - return value is the response body |
 | `beforeLogout`   | `(mixed $user): void`                 | before token revocation                                |
 | `afterLogout`    | `(): void`                            | after revocation, before response                      |
 
@@ -514,9 +528,9 @@ class AdminAuthController extends BaseAuthController
 
 ## Dependencies
 
-- [`raditzfarhan/laravel-api-response`](https://github.com/raditzfarhan/laravel-api-response) — all responses are dispatched through its `response()->api()` macro
-- [`laraditz/model-filter`](https://github.com/laraditz/model-filter) — powers the `$filter` / `Filterable` integration for `index()` query filtering
-- [`laravel/sanctum`](https://github.com/laravel/sanctum) — token issuance and revocation for auth endpoints
+- [`raditzfarhan/laravel-api-response`](https://github.com/raditzfarhan/laravel-api-response) - all responses are dispatched through its `response()->api()` macro
+- [`laraditz/model-filter`](https://github.com/laraditz/model-filter) - powers the `$filter` / `Filterable` integration for `index()` query filtering
+- [`laravel/sanctum`](https://github.com/laravel/sanctum) - token issuance and revocation for auth endpoints
 
 ---
 
