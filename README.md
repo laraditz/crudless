@@ -403,10 +403,120 @@ Internal helpers `authorizeAction()`, `resolveStoreData()`, `resolveUpdateData()
 
 ---
 
+### Auth
+
+`BaseAuthController` provides register, login, and logout out of the box via Laravel Sanctum.
+
+**Step 1** — ensure `HasApiTokens` is on your User model:
+
+```php
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasApiTokens;
+}
+```
+
+**Step 2** — register routes in `routes/api.php`:
+
+```php
+use Laraditz\Crudless\Facades\Crudless;
+
+Crudless::authRoutes();
+```
+
+This registers:
+
+| Method   | URI              | Auth         |
+| -------- | ---------------- | ------------ |
+| `POST`   | `/auth/register` | No           |
+| `POST`   | `/auth/login`    | No           |
+| `DELETE` | `/auth/logout`   | Bearer token |
+
+**Custom prefix or controller:**
+
+```php
+// Custom prefix only
+Crudless::authRoutes('admin');
+
+// Custom prefix + custom controller
+Crudless::authRoutes('vendor', VendorAuthController::class);
+```
+
+**Disable specific routes with `$except`:**
+
+```php
+// Register and login only — no register route
+Crudless::authRoutes(except: ['register']);
+
+// Login only
+Crudless::authRoutes(except: ['register', 'logout']);
+
+// Works with custom prefix and controller too
+Crudless::authRoutes('admin', AdminAuthController::class, except: ['register']);
+```
+
+Available values: `'register'`, `'login'`, `'logout'`.
+
+**Configuration properties:**
+
+```php
+protected string  $userModel       = \App\Models\User::class;
+protected ?string $registerRequest = null;
+protected ?string $loginRequest    = null;
+```
+
+**Overridable rule methods:**
+
+```php
+class AdminAuthController extends BaseAuthController
+{
+    protected string $userModel = Admin::class;
+
+    protected function registerRules(): array
+    {
+        return [
+            ...parent::registerRules(),
+            'department' => 'required|string',
+        ];
+    }
+}
+```
+
+**Lifecycle hooks:**
+
+| Hook             | Signature                             | When it runs                                           |
+| ---------------- | ------------------------------------- | ------------------------------------------------------ |
+| `beforeRegister` | `(array $data): void`                 | after validation, before creation                      |
+| `afterRegister`  | `(mixed $user): mixed`                | after creation, before response                        |
+| `beforeLogin`    | `(array $data): void`                 | after validation, before credential check              |
+| `afterLogin`     | `(mixed $user, string $token): mixed` | after token issued — return value is the response body |
+| `beforeLogout`   | `(mixed $user): void`                 | before token revocation                                |
+| `afterLogout`    | `(): void`                            | after revocation, before response                      |
+
+```php
+class AdminAuthController extends BaseAuthController
+{
+    protected function afterLogin(mixed $user, string $token): mixed
+    {
+        return ['token' => $token, 'role' => $user->role];
+    }
+
+    protected function beforeRegister(array $data): void
+    {
+        abort_if(!str_ends_with($data['email'], '@company.com'), 403, 'Company email required.');
+    }
+}
+```
+
+---
+
 ## Dependencies
 
 - [`raditzfarhan/laravel-api-response`](https://github.com/raditzfarhan/laravel-api-response) — all responses are dispatched through its `response()->api()` macro
 - [`laraditz/model-filter`](https://github.com/laraditz/model-filter) — powers the `$filter` / `Filterable` integration for `index()` query filtering
+- [`laravel/sanctum`](https://github.com/laravel/sanctum) — token issuance and revocation for auth endpoints
 
 ---
 
