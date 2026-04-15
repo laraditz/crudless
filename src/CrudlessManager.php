@@ -12,7 +12,7 @@ class CrudlessManager
         array $except = [],
         array $middleware = []
     ): void {
-        $group = Route::prefix($prefix);
+        $group = Route::prefix($prefix)->name("{$prefix}.");
 
         if ($middleware) {
             $group = $group->middleware($middleware);
@@ -20,15 +20,15 @@ class CrudlessManager
 
         $group->group(function () use ($controller, $except) {
             if (!in_array('register', $except)) {
-                Route::post('register', [$controller, 'register']);
+                Route::post('register', [$controller, 'register'])->name('register');
             }
 
             if (!in_array('login', $except)) {
-                Route::post('login', [$controller, 'login']);
+                Route::post('login', [$controller, 'login'])->name('login');
             }
 
             if (!in_array('logout', $except)) {
-                Route::post('logout', [$controller, 'logout'])->middleware('auth:sanctum');
+                Route::post('logout', [$controller, 'logout'])->middleware('auth:sanctum')->name('logout');
             }
         });
     }
