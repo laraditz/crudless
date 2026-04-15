@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.1] - 2026-04-15
+
+### Added
+- `Crudless::authRoutes()` now accepts a `$middleware` parameter — apply middleware to the entire auth route group via `authRoutes(middleware: ['throttle:60,1'])`
+
 ## [1.2.0] - 2026-04-11
 
 ### Added
