@@ -9,9 +9,16 @@ class CrudlessManager
     public function authRoutes(
         string $prefix = 'auth',
         string $controller = BaseAuthController::class,
-        array $except = []
+        array $except = [],
+        array $middleware = []
     ): void {
-        Route::prefix($prefix)->group(function () use ($controller, $except) {
+        $group = Route::prefix($prefix);
+
+        if ($middleware) {
+            $group = $group->middleware($middleware);
+        }
+
+        $group->group(function () use ($controller, $except) {
             if (!in_array('register', $except)) {
                 Route::post('register', [$controller, 'register']);
             }

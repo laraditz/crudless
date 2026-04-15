@@ -458,6 +458,19 @@ Crudless::authRoutes('admin');
 Crudless::authRoutes('vendor', VendorAuthController::class);
 ```
 
+**Apply middleware to all auth routes:**
+
+```php
+// Single middleware
+Crudless::authRoutes(middleware: ['throttle:60,1']);
+
+// Multiple middleware
+Crudless::authRoutes(middleware: ['throttle:60,1', 'verified']);
+
+// Combined with other parameters
+Crudless::authRoutes('admin', AdminAuthController::class, middleware: ['throttle:10,1']);
+```
+
 **Disable specific routes with `$except`:**
 
 ```php
