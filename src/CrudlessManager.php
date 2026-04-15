@@ -12,7 +12,13 @@ class CrudlessManager
         array $except = [],
         array $middleware = []
     ): void {
-        $group = Route::prefix($prefix)->name("{$prefix}.");
+
+        $group = Route::prefix($prefix);
+        $name = $prefix ? str($prefix)->replace('/', '.')->value . "." : null;
+
+        if ($name) {
+            $group = $group->name($name);
+        }
 
         if ($middleware) {
             $group = $group->middleware($middleware);
