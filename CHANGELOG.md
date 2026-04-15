@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.2] - 2026-04-15
+
+### Added
+- Auth routes are now named — names are derived from the prefix (e.g., `auth.register`, `auth.login`, `auth.logout` for the default `auth` prefix)
+
 ## [1.2.1] - 2026-04-15
 
 ### Added

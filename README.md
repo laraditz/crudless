@@ -45,11 +45,11 @@ Crudless::authRoutes();
 
 That's it. You now have:
 
-| Method | URI              | Description       |
-| ------ | ---------------- | ----------------- |
-| `POST` | `/auth/register` | Create account    |
-| `POST` | `/auth/login`    | Get Sanctum token |
-| `POST` | `/auth/logout`   | Revoke token      |
+| Method | URI              | Name              | Description       |
+| ------ | ---------------- | ----------------- | ----------------- |
+| `POST` | `/auth/register` | `auth.register`   | Create account    |
+| `POST` | `/auth/login`    | `auth.login`      | Get Sanctum token |
+| `POST` | `/auth/logout`   | `auth.logout`     | Revoke token      |
 
 ---
 
@@ -442,11 +442,11 @@ Crudless::authRoutes();
 
 This registers:
 
-| Method | URI              | Auth         |
-| ------ | ---------------- | ------------ |
-| `POST` | `/auth/register` | No           |
-| `POST` | `/auth/login`    | No           |
-| `POST` | `/auth/logout`   | Bearer token |
+| Method | URI              | Name            | Auth         |
+| ------ | ---------------- | --------------- | ------------ |
+| `POST` | `/auth/register` | `auth.register` | No           |
+| `POST` | `/auth/login`    | `auth.login`    | No           |
+| `POST` | `/auth/logout`   | `auth.logout`   | Bearer token |
 
 **Custom prefix or controller:**
 
